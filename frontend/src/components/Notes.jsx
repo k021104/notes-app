@@ -187,7 +187,7 @@ function Notes ({ search }) {
           {filteredNotes.map(note => (
             <div
               key={note._id}
-              className={`rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border ${
+              className={`cursor-pointer rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border ${
                 note.isPinned
                   ? 'bg-blue-50 border-blue-200'
                   : 'bg-white border-slate-200'
@@ -199,7 +199,10 @@ function Notes ({ search }) {
                   <div className='flex items-center gap-2'>
                     <BsPinAngle
                       size={17}
-                      onClick={() => togglePin(note._id)}
+                      onClick={e => {
+                        e.stopPropagation()
+                        togglePin(note._id)
+                      }}
                       className={`cursor-pointer transition shrink-0 mt-1 ${
                         note.isPinned
                           ? 'text-blue-600'
@@ -219,14 +222,20 @@ function Notes ({ search }) {
 
                 <div className='flex items-center gap-3 ml-3 mt-2'>
                   <button
-                    onClick={() => editMode(note)}
+                    onClick={e => {
+                      e.stopPropagation()
+                      editMode(note)
+                    }}
                     className='text-slate-400 hover:text-blue-600 transition cursor-pointer'
                   >
                     <FiEdit2 size={18} />
                   </button>
 
                   <button
-                    onClick={() => deleteNote(note._id)}
+                    onClick={e => {
+                      e.stopPropagation()
+                      deleteNote(note._id)
+                    }}
                     className='text-slate-400 hover:text-red-500 transition cursor-pointer'
                   >
                     <FiTrash2 size={18} />
