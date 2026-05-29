@@ -12,7 +12,8 @@ const app = express()
 app.use(express.json())
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    // origin: 'http://localhost:5173',
+    origin: 'https://notes-app-three-rose.vercel.app/',
     credentials: true
   })
 )
