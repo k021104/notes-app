@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IoChevronDown, IoSearchOutline } from 'react-icons/io5'
 import { VscAccount } from 'react-icons/vsc'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Navbar ({ search, setSearch }) {
   const navigate = useNavigate()
@@ -13,6 +13,7 @@ function Navbar ({ search, setSearch }) {
     if (confirmLogout) {
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')
+      // localStorage.removeItem('token')
 
       navigate('/login')
     }
@@ -21,11 +22,31 @@ function Navbar ({ search, setSearch }) {
   const user = JSON.parse(localStorage.getItem('user'))
 
   return (
-    <div className='flex justify-between items-center px-17 py-1 bg-white border-b border-slate-200 shadow-sm'>
-      <div>
-        <h1 className='text-2xl font-semibold tracking-tight text-slate-900'>
+    <div className='flex justify-between items-center px-16 py-1 bg-white border-b border-slate-200 shadow-sm'>
+      <div className='flex items-center gap-6'>
+        <Link
+          // onClick={() => navigate('/')}
+          to='/'
+          className='text-[15px] font-semibold text-slate-700 hover:text-blue-600 transition cursor-pointer'
+        >
           Notes
-        </h1>
+        </Link>
+
+        <Link
+          // onClick={() => navigate('/archived')}
+          to='/archived'
+          className='text-[15px] font-semibold text-slate-700 hover:text-blue-600 transition cursor-pointer'
+        >
+          Archived
+        </Link>
+
+        <Link
+          // onClick={() => navigate('/trash')}
+          to='/trash'
+          className='text-[15px] font-semibold text-slate-700 hover:text-blue-600 transition cursor-pointer'
+        >
+          Trash
+        </Link>
       </div>
       <div className='relative flex items-center'>
         <input

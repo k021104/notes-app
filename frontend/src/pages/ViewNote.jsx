@@ -46,7 +46,7 @@ function ViewNote () {
           className='flex items-center gap-2 text-slate-600 hover:text-blue-600 transition mb-6 cursor-pointer'
         >
           <IoArrowBack size={22} />
-          <span className='font-medium'>Back to Home</span>
+          <span className='font-medium'>Back to Notes</span>
         </button>
 
         {/* Note Card */}

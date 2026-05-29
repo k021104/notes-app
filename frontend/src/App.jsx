@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
-import Navbar from './components/Navbar'
-import Notes from './components/Notes'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import { Route, Routes } from 'react-router-dom'
+import Notes from './components/Notes'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import Home from './pages/Home'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import ViewNote from './pages/ViewNote'
+import ArchivedNotes from './pages/ArchivedNotes'
+import MainLayout from './layout/MainLayout'
+import TrashNotes from './pages/TrashNotes'
 // import './App.css'
 
 function App () {
@@ -21,37 +22,37 @@ function App () {
         pauseOnHover
         theme='light'
       />
+
       <Routes>
-        <Route path='/login' element={<Login />} />
-
-        <Route path='/register' element={<Register />} />
-
-        {/* <Route
-          path='/navbar'
-          element={<Navbar/>}
-        /> */}
-
+        {/* Default Route */}
         <Route
           path='/'
           element={
-            <ProtectedRoutes>
-              <Home />
-            </ProtectedRoutes>
+            localStorage.getItem('accessToken') ? (
+              <Navigate to='/notes' />
+            ) : (
+              <Navigate to='/login' />
+            )
           }
         />
 
-        <Route
-          path='/notes/:id' element={<ViewNote />}
-        />
+        {/* Public Routes */}
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
 
-        {/* <Route
-          path='/notes'
-          element={
-            <ProtectedRoutes>
-              <Notes />
-            </ProtectedRoutes>
-          }
-        /> */}
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoutes />}>
+          {/* Navbar Layout */}
+          <Route element={<MainLayout />}>
+            <Route path='/notes' element={<Notes />} />
+
+            <Route path='/archived' element={<ArchivedNotes />} />
+
+            <Route path='/notes/:id' element={<ViewNote />} />
+
+            <Route path='/trash' element={<TrashNotes />} />
+          </Route>
+        </Route>
       </Routes>
     </>
   )

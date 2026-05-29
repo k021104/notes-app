@@ -5,8 +5,11 @@ import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 import { RxCrossCircled } from 'react-icons/rx'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { BiArchiveIn } from 'react-icons/bi'
+import { useOutletContext } from 'react-router-dom'
+import { FaRegPenToSquare } from 'react-icons/fa6'
 
-function Notes ({ search }) {
+function Notes () {
   const [notes, setNotes] = useState([])
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -15,6 +18,8 @@ function Notes ({ search }) {
   const [openModel, setOpenModel] = useState(false)
 
   const navigate = useNavigate()
+
+  const { search } = useOutletContext()
 
   const fetchNotes = async () => {
     try {
@@ -50,13 +55,29 @@ function Notes ({ search }) {
     }
   }
 
-  const deleteNote = async id => {
+  // const deleteNote = async id => {
+  //   try {
+  //     const response = await api.delete(`/notes/delete/${id}`)
+  //     toast.success('Note Deleted successfully', { autoClose: 2000 })
+  //     fetchNotes()
+  //   } catch (error) {
+  //     toast.error(error.response?.data?.message || 'Failed to delete note')
+  //   }
+  // }
+
+  const moveToTrash = async id => {
+    console.log(id)
+
     try {
-      const response = await api.delete(`/notes/delete/${id}`)
-      toast.error('Note Deleted successfully', { autoClose: 2000 })
+      await api.delete(`/notes/delete/${id}`)
+
+      toast.success('Note moved to trash', { autoClose: 2000 })
+
       fetchNotes()
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to delete note')
+      toast.error(
+        error.response?.data?.message || 'Failed to move note to trash'
+      )
     }
   }
 
@@ -67,7 +88,7 @@ function Notes ({ search }) {
         content
       })
 
-      toast.info('Note updated successfully', { autoClose: 1000 })
+      toast.success('Note updated successfully', { autoClose: 1000 })
 
       setTitle('')
       setContent('')
@@ -109,6 +130,20 @@ function Notes ({ search }) {
       console.log(response.data)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const archiveNote = async id => {
+    try {
+      const response = await api.put(`/notes/archive/${id}`)
+
+      toast.success('Note archived successfully', {
+        autoClose: 1000
+      })
+
+      fetchNotes()
+    } catch (error) {
+      error.response?.data?.message || 'Failed to archive note'
     }
   }
 
@@ -155,32 +190,32 @@ function Notes ({ search }) {
       </div>
 
       {filteredNotes.length === 0 ? (
-        <div className='flex flex-col items-center justify-center py-10 text-center'>
-          <div className='bg-white border border-slate-200 shadow-sm rounded-3xl px-10 py-12 max-w-md'>
-            <div className='text-6xl mb-4'>📝</div>
+        <div className='flex flex-col items-center justify-center py-24 bg-white rounded-3xl border border-dashed border-slate-300'>
+          {/* <div className='bg-white border border-slate-200 shadow-sm rounded-3xl px-10 py-12 max-w-md'> */}
+          <FaRegPenToSquare className='text-slate-300 mb-4' size={70} />
 
-            <h2 className='text-2xl font-semibold text-slate-800'>
-              No Notes Yet
-            </h2>
+          <h2 className='text-2xl font-semibold text-slate-700'>
+            No Notes Yet
+          </h2>
 
-            <p className='text-slate-500 mt-3 leading-7'>
-              Start organizing your ideas, tasks, and thoughts by creating your
-              first note.
-            </p>
+          <p className='text-slate-400 mt-2'>
+            Start organizing your ideas, tasks, and thoughts by creating your
+            first note.
+          </p>
 
-            <button
-              onClick={() => {
-                setIsEditing(false)
-                setEditId(null)
-                setTitle('')
-                setContent('')
-                setOpenModel(true)
-              }}
-              className='mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition'
-            >
-              + Create First Note
-            </button>
-          </div>
+          <button
+            onClick={() => {
+              setIsEditing(false)
+              setEditId(null)
+              setTitle('')
+              setContent('')
+              setOpenModel(true)
+            }}
+            className='mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition'
+          >
+            + Create First Note
+          </button>
+          {/* </div> */}
         </div>
       ) : (
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
@@ -234,11 +269,21 @@ function Notes ({ search }) {
                   <button
                     onClick={e => {
                       e.stopPropagation()
-                      deleteNote(note._id)
+                      moveToTrash(note._id)
                     }}
                     className='text-slate-400 hover:text-red-500 transition cursor-pointer'
                   >
                     <FiTrash2 size={18} />
+                  </button>
+
+                  <button
+                    onClick={e => {
+                      e.stopPropagation()
+                      archiveNote(note._id)
+                    }}
+                    className='text-slate-400 hover:text-yellow-500 transition cursor-pointer'
+                  >
+                    <BiArchiveIn size={18} />
                   </button>
                 </div>
               </div>
@@ -246,7 +291,7 @@ function Notes ({ search }) {
               <div className='h-px bg-slate-100 my-4'></div>
 
               <div className='text-sm text-slate-600 leading-7 line-clamp-5 mt-2'>
-                {note.content}
+                <pre>{note.content}</pre>
               </div>
             </div>
           ))}

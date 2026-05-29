@@ -64,7 +64,7 @@ function Login () {
       setPassword('')
 
       toast.success('Login Successful', { autoClose: 2000 })
-      navigate('/')
+      navigate('/notes')
     } catch (error) {
       setErrors({
         apiError: error.response?.data?.message || 'Something went wrong'

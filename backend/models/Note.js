@@ -14,6 +14,14 @@ const noteSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    isArchived: {
+      type: Boolean, 
+      default: false
+    },
+    isTrashed: {
+      type: Boolean,
+      default: false
+    },
 
     user: {
       type: mongoose.Schema.Types.ObjectId,
