@@ -22,8 +22,8 @@ function Navbar ({ search, setSearch }) {
   const user = JSON.parse(localStorage.getItem('user'))
 
   return (
-    <div className='flex justify-between items-center px-16 py-1 bg-white border-b border-slate-200 shadow-sm'>
-      <div className='flex items-center gap-6'>
+    <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-4 px-4 sm:px-6 md:px-10 lg:px-16 py-3 bg-white border-b border-slate-200 shadow-sm'>
+      <div className='flex items-center gap-4 sm:gap-6 flex-wrap'>
         <Link
           // onClick={() => navigate('/')}
           to='/'
@@ -48,20 +48,20 @@ function Navbar ({ search, setSearch }) {
           Trash
         </Link>
       </div>
-      <div className='relative flex items-center'>
+      <div className='relative flex items-center w-full md:w-auto'>
         <input
           type='search'
           placeholder='Search...'
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className='w-72 px-4 py-2.5 pr-10 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 placeholder:text-slate-400 outline-none focus:bg-white focus:ring-2 focus:ring-blue-600/10 focus:border-blue-600 transition'
+          className='w-full md:w-72 px-4 py-2.5 pr-10 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 placeholder:text-slate-400 outline-none focus:bg-white focus:ring-2 focus:ring-blue-600/10 focus:border-blue-600 transition'
         />
         <span className='absolute right-4 text-slate-400'>
           <IoSearchOutline size={20} />
         </span>
       </div>
 
-      <div className='relative'>
+      <div className='relative self-end md:self-auto'>
         <div
           onClick={() => setShowDropdown(!showDropdown)}
           className='flex items-center gap-3 cursor-pointer px-3 py-2 rounded-xl hover:bg-slate-100 transition'
@@ -89,7 +89,7 @@ function Navbar ({ search, setSearch }) {
         </div>
 
         {showDropdown && (
-          <div className='absolute right-0 mt-3 w-52 bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden z-50'>
+          <div className='absolute right-0 mt-3 w-48 sm:w-52 bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden z-50'>
             <div className='px-4 py-3 border-b border-slate-100'>
               <p className='text-sm font-semibold text-slate-800'>
                 {user?.name}
