@@ -164,13 +164,13 @@ function Notes () {
 
   return (
     <div className='min-h-screen bg-slate-50 px-8 py-6'>
-      <div className='flex items-center justify-between mb-8'>
+      <div className='md:flex items-center justify-between mb-8'>
         <div>
           <h1 className='text-3xl font-semibold text-slate-900 tracking-tight'>
             My Notes
           </h1>
 
-          <p className='text-sm text-slate-500 mt-1'>
+          <p className='text-sm text-slate-500 mt-1 md:mb-0 mb-4'>
             Manage and organize your notes efficiently
           </p>
         </div>
